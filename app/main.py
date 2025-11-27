@@ -1,11 +1,12 @@
-# app/main.py
-import socket
 from fastapi import FastAPI
-from app.routes.transport_routes import router as transport_router
+from .routes.transport_routes import router as transport_router
 
-app = FastAPI(title="Community Transport Service API")
-app.include_router(transport_router, prefix="/transport")
+def create_app():
+    app = FastAPI(title="Community Transport API")
+    app.include_router(transport_router)
+    @app.get("/")
+    def root():
+        return {"message": "Community Transport API is running"}
+    return app
 
-@app.get("/")
-def home():
-    return {"message": "Community Transport API is running", "server": socket.gethostname()}
+app = create_app()
